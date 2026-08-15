@@ -37,7 +37,8 @@ Scripts are numbered by stage and should be run in order.
 |---|---|
 | `per_donor_rogue.R` | Per-donor ROGUE scores by genotype and by cell state (UMI platform, span 0.75) |
 | `per_gene_entropy.R` | Per-gene expression entropy (`SE_fun`) for control and each DCM genotype separately |
-| `gene_sets.R` | Defines the reference background, per-genotype ds gene sets, the DCM-specific set, the genotype-independent core and gene recurrence |
+| `gene_sets.R` | Defines the reference background, per-genotype ds gene sets and the DCM-specific set |
+| `core_genes.R` | Defines the genotype-independent core gene set and annotates it with gene symbols |
 | `cell_states.R` | Per-cell-state ROGUE comparison, cell-state marker identification |
 | `statistics_and_plots.R` | Statistical comparisons and main ROGUE figures |
 
