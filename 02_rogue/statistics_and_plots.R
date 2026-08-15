@@ -78,6 +78,13 @@ wilcox_vs_control <- function(g) {
 vs  <- do.call(rbind, lapply(dcm, wilcox_vs_control))
 vs$padj <- p.adjust(vs$p, method = "BH")
 
+# ---- variance check: location shift vs difference in spread ----
+for (g in dcm) {
+  d <- droplevels(subset(rp, pathway %in% c("control", g)))
+  cat(g, ": Fligner-Killeen p =",
+      signif(fligner.test(rogue ~ pathway, data = d)$p.value, 3), "\n")
+}
+
 # assemble full results table (control row = reference, no test)
 res <- data.frame(pathway = "control", W = NA, p = NA, padj = NA, r_rb = NA) |>
   rbind(vs[, c("pathway", "W", "p", "padj", "r_rb")])
