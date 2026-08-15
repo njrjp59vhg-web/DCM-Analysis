@@ -216,3 +216,22 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+# Jupyter
+.ipynb_checkpoints/
+__pycache__/
+
+# Large / intermediate data — not versioned
+*.h5ad
+*.loom
+*.mtx
+*.rds
+*.dat
+*.feather
+
+# HPC job logs
+*.out
+*.err
+
+# OS
+.DS_Store
+Thumbs.db
