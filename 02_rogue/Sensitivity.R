@@ -50,7 +50,7 @@ if (!exists("pathway_expr") || !exists("pathway_meta")) {
   pathway_meta <- pathway_meta[pathway_meta$X %in% colnames(pathway_expr), ]
 }
 
-if (!exists("rogue.pathway")) {
+if (!exists("rogue.genotype")) {
   rogue.pathway <- readRDS(file.path(results_dir, "rogue_genotype.rds"))
 }
 
@@ -83,7 +83,7 @@ p_corr <- ggplot(rp2, aes(n_cells, rogue, colour = pathway)) +
   scale_x_log10() +
   labs(x = "Cells per donor (log10)", y = "ROGUE",
        title = paste0("Spearman rho = ", round(cor_all$estimate, 3),
-                       ", p = ", signif(cor_all$p.value, 3))) +
+                      ", p = ", signif(cor_all$p.value, 3))) +
   theme_classic(base_size = 12)
 ggsave(file.path(results_dir, "rogue_vs_ncells.png"), p_corr, width = 6, height = 4.5, dpi = 300)
 
@@ -111,9 +111,7 @@ print(cor.test(rp2_ctrl_noOutlier$rogue, rp2_ctrl_noOutlier$n_cells, method = "s
 
 ## ============================================================
 ## PART 2: ANCOVA SENSITIVITY CHECKS
-## (context only -- Part 3's downsampling is the definitive test,
-##  since these models suffer from collinearity between genotype
-##  and cell count)
+## (context only -- Part 3's downsampling is the definitive test)
 ## ============================================================
 
 rp2$log_n_cells <- log(rp2$n_cells)
@@ -197,11 +195,11 @@ for (i in seq_len(n_reps)) {
   meta_sub <- pathway_meta[match(keep_cells, as.character(pathway_meta$X)), ]
 
   rogue_rep <- rogue(expr_sub,
-                      labels   = meta_sub$Genotype,
-                      samples  = meta_sub$donor_id,
-                      platform = "UMI",
-                      filter   = FALSE,
-                      span     = 0.75)
+                     labels   = meta_sub$Genotype,
+                     samples  = meta_sub$donor_id,
+                     platform = "UMI",
+                     filter   = FALSE,
+                     span     = 0.75)
 
   reps_list[[i]] <- rogue_rep
 
@@ -244,8 +242,8 @@ pvals <- sapply(dcm_groups, function(g) {
   wilcox.test(rogue ~ pathway, data = d)$p.value
 })
 print(data.frame(genotype = dcm_groups,
-                  p = pvals,
-                  p_adj = p.adjust(pvals, method = "BH")))
+                 p = pvals,
+                 p_adj = p.adjust(pvals, method = "BH")))
 
 cat("\n--- downsampled: genotype independence, DCM only (matches original claim) ---\n")
 rp_ds_dcm <- subset(rp_ds, pathway != "control")
